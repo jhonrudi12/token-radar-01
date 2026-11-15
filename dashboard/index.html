@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — pre-token protocols ranked by implied value</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<a class="skip" href="#board">Skip to the board</a>
+<header class="masthead">
+  <div class="masthead-inner">
+    <p class="kicker">A ledger of protocols that may one day carry a token</p>
+    <h1>Token Radar</h1>
+    <p class="subtitle">239 pre-token protocols, ranked by implied token value from their own TVL and the market multiples of tokenized peers.</p>
+    <p class="meta">Snapshot <time id="asof">—</time> · Source: <span id="source">—</span> · Model <span id="modelver">radar-2</span></p>
+  </div>
+</header>
+<main>
+  <p class="lede">Every protocol on this board records no token in the snapshot — no market cap, no listing, no symbol. The radar asks what such a protocol would be worth if it did carry one: it takes the protocol's TVL, multiplies it by the median market-cap-to-TVL ratio of tokenized protocols in the same category, then adjusts for recent growth and for age. The result is an implied value, not a price and not a promise — a way to sort a crowded field before doing the deeper work.</p>
+
+  <section class="facts" aria-label="Snapshot facts">
+    <div class="fact"><span class="fact-num" id="f-ranked">239</span><span class="fact-label">ranked protocols</span></div>
+    <div class="fact"><span class="fact-num" id="f-watch">40/40</span><span class="fact-label">watchlist covered</span></div>
+    <div class="fact"><span class="fact-num" id="f-early">199</span><span class="fact-label">early rows found by the radar</span></div>
+    <div class="fact"><span class="fact-num" id="f-model">radar-2</span><span class="fact-label">model version</span></div>
+  </section>
+
+  <section class="controls" aria-label="Board controls">
+    <label class="search">Search
+      <input id="q" type="search" placeholder="Protocol name or slug" autocomplete="off">
+    </label>
+    <label class="cat">Category
+      <select id="cat"><option value="">All categories</option></select>
+    </label>
+    <div class="tabs" role="tablist" aria-label="Board view">
+      <button id="tab-pre" role="tab" aria-selected="true">Pre-token</button>
+      <button id="tab-live" role="tab" aria-selected="false">Live token</button>
+    </div>
+  </section>
+  <p class="count" id="count" aria-live="polite"></p>
+
+  <section class="card">
+    <table id="board">
+      <thead id="thead"></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <p class="empty" id="empty" hidden>No protocols match these filters.</p>
+  </section>
+  <p class="live-note" id="livenote" hidden>These protocols already trade. The figure shown is their market value — the market's own number, never a model estimate — and they are kept out of the ranked board.</p>
+
+  <section class="card model" aria-labelledby="model-h">
+    <h2 id="model-h">How the model works</h2>
+    <p>Implied value = TVL × peer multiple × growth multiplier × maturity multiplier, rounded to the nearest dollar (and never below $1). The peer multiple is the category's median market-cap-to-TVL ratio among protocols whose token already trades. Growth adjusts for the 7-day TVL change, clamped between −60% and +120% and counted at half weight. Maturity starts at 0.6 for a brand-new protocol and rises to 1.0 at three years old; a protocol of unknown age counts as 365 days.</p>
+    <p class="fine">Peer ratios are winsorized at 10×, shrunk toward the global median (0.2227) with prior weight 4, and clamped to [0.02, 3.0]. A category with no tokenized peers uses the global median outright.</p>
+    <table class="peers">
+      <thead><tr><th>Category</th><th class="num">Peers n</th><th class="num">Median</th><th class="num">Multiple</th></tr></thead>
+      <tbody id="peers"></tbody>
+    </table>
+    <p class="fine">Peer table: the twelve categories with the most tokenized peers. The full table holds <span id="peercount">34</span> categories.</p>
+  </section>
+</main>
+<dialog id="detail" aria-labelledby="d-name">
+  <div id="d-body"></div>
+  <form method="dialog" class="dlg-close"><button value="close">Close</button></form>
+</dialog>
+<footer>
+  <p>The snapshot records no token for the protocols on the ranked board. That is the record, not proof one does not exist: a token could be unlisted in the snapshot, or arrive later. Implied values are model estimates from TVL and peer ratios, not valuations, and nothing here is investment advice.</p>
+  <p class="fine">Token Radar · model radar-2 · data read only from the local snapshot file.</p>
+</footer>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
